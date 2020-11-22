@@ -1,4 +1,37 @@
-field = QTable.read('field13_input.fit') ### CHANGE FIELD NAME ###
+####################################################################################################################
+#####################                                                      ##########################################
+#####################       Outflow Coordinates and Velocity               #########################################
+#####################                                                      #########################################
+####################################################################################################################
+
+
+################################# COLLECT DATA (corrdinates, velocity ranges) FOR ALL OUTFLOWS #####################################################
+from astropy.table import QTable, Table, Column
+from astropy import units as u
+
+
+t_field = QTable()
+
+tag=['1']
+
+t_field['Name'] = tag  
+
+t_field['RAJ2000_blue'] = np.array([])* u.deg   # BLUE PIXEL  deg 
+t_field['DecJ2000_blue'] = np.array ([]) * u.deg       # BLUE PIXEL
+t_field['RAJ2000_red'] = np.array ([]) * u.deg    # RED PIXEL
+t_field['DecJ2000_red'] = np.array ([]) * u.deg        # RED PIXEL
+t_field['vbmin'] = np.array ([])*u.km/u.s
+t_field['vbmax'] = np.array ([])*u.km/u.s
+t_field['vrmin'] = np.array ([])*u.km/u.s
+t_field['vrmax'] = np.array ([])*u.km/u.s
+
+distance = 1.5e3  # DISTANCE OF OUTFLOW in kpc # Arbitrary distance: CHANGE HERE #
+
+t_field.write('fieldname_input.fit', overwrite=True) ### CHANGE FIELD NAME ###
+
+
+
+field = QTable.read('fieldname_input.fit') ### CHANGE FIELD NAME ###
 
 ## CREATE EMPTY TABLE FOR OUTPUT MASS, MOMENTUM, ENERGY 
 t = QTable(names=('Seq','Mass', 'Momentum', 'Energy'), dtype=('S1','f4','f4','f4'))  
@@ -18,7 +51,7 @@ for z in range(0,len(field)): # z number of outflows in the list
     Dec = dec_b.value
 
 
-    cube_12co = SpectralCube.read('field13.fits') ### CHANGE FIELD NAME ###
+    cube_12co = SpectralCube.read('fieldname.fits') ### CHANGE FIELD NAME ###
     #cube_12co = SpectralCube.read('field13smooth.fits') ### CHANGE FIELD NAME ###
     ##### SLICE THE MAIN FIELD TO PRODUCE A SUBCUBE WITH CROPPED SPECTRAL AND SPECIAL AXES 
 
@@ -39,7 +72,7 @@ for z in range(0,len(field)): # z number of outflows in the list
 
     ##### Spectral boundary includes 15 km/s on each side of the vel range 
     dv = (cube_12co.spectral_axis[1]-cube_12co.spectral_axis[0]).value
-    vlo = vbmin-15*u.km/u.s
+    vlo = vbmin-15*u.km/u.s # Just a reasonable span 
     vhi = vrmax+15*u.km/u.s
 
     
@@ -58,17 +91,32 @@ for z in range(0,len(field)): # z number of outflows in the list
 
     from astropy.table import QTable
     from astropy import units as u
-
-    ##### FUNCTIONS #############
+    # THIS FUNCTION IS USED FOR DEFINING PV-SLICE SPATIAL LENGTH AND DIRECTION 
     def f(pb,pr): # pb = blue lobe pixel. USE A LINEAR FUNCTION JOINING BLUE AND RED LOBE PIXELS
         x0 = (pb[0]+pr[0])/2
         y0 = (pb[1]+pr[1])/2
-        m = (pr[1]-pb[1])/(pr[0]-pb[0])
         dx = np.abs(pb[0]-x0)
-        xb = x0 - 3*dx
-        xr = x0 + 3*dx
-        yb = y0 + m*(xb-x0)
-        yr = y0 + m*(xr-x0)
+        if pr[0]-pb[0] == 0: # if blue and red pixels form vertical a line, slope is undefined
+            xb = pb[0]
+            xr = pb[0]
+            if pb[1] < y0:
+                yb = pb[1] - 2*y0
+                yr = pr[1] + 2*y0
+            elif pb[1] > y0:
+                yb = pb[1] + 2*y0
+                yr = pr[1] - 2*y0
+        else:
+            m = (pr[1]-pb[1])/(pr[0]-pb[0]) # finite slope
+            if pb[0] < x0:
+                xb = x0 - 3*dx
+                xr = x0 + 3*dx
+                yb = y0 + m*(xb-x0)
+                yr = y0 + m*(xr-x0)
+            elif pb[0] > x0:
+                xb = x0 + 3*dx
+                xr = x0 - 3*dx
+                yb = y0 + m*(xb-x0)
+                yr = y0 + m*(xr-x0)
         pb2 = (xb,yb)
         pr2 = (xr,yr)
         return pb2, pr2
@@ -463,4 +511,4 @@ t['Mass'].unit = u.solMass
 t['Momentum'].unit = u.solMass*u.km/u.s
 t['Energy'].unit = 1e44*u.erg
 
-t.write('field13_output.fit',overwrite=True) ### CHANGE NAME ###
+t.write('fieldname_output.fit',overwrite=True) ### CHANGE NAME ###
