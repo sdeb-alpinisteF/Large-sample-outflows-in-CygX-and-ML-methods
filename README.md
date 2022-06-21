@@ -2,7 +2,7 @@
 
 The goal of this work is to investigate the interaction between cold molecular gas and stellar feedback in spiral arms of the Milky Way galaxy. Particularly, the focus is on the Cygnus X region, a site for active star formation in the local arm (1.5 kpc from the Sun).
 
-Background: The evolution of cold molecular hydrogen gas clouds goes through several intermediate processes before the spontaneous gravitational collapse, leading to the formation of pre-natal stars or protostars. Protostars are typically associated with wide angled, high-momentum molecular outflows. The energy injection from these outflows can provide a significant amount of energy towards maintaining the stability of the parent cloud and influence further star formation. Also, radiation from existing young massive stars near a dense molecular cloud can induce gravitational collapse (like induced labor), hence increasing the local star formation rate.
+Background: The evolution of cold molecular hydrogen gas clouds goes through several intermediate processes before the spontaneous gravitational collapse, leading to the formation of pre-natal stars or protostars. Protostars are typically associated with wide angled, high-momentum outflowing molecular (hydrogen) gas. The energy injection from these outflows can provide a significant amount of energy towards maintaining the stability of the parent cloud and influence further star formation. Also, radiation from existing young massive stars near a dense molecular cloud can induce gravitational collapse (like induced labor), hence increasing the local star formation rate.
 
 There are four main results of this work,
 
