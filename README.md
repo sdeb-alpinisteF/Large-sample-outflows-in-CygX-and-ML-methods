@@ -3,7 +3,7 @@
 The goal of this work is to investigate the impact of cold molecular gas on local star formation in spiral arms of the Milky Way galaxy. Particularly, the focus is on the Cygnus X region, a site for active star formation in the local arm.  
 There are four main results on this work,
 
-1. Predicting mass, momentum, and energy of molecular outflows in Cyg X from 12CO(3-2) Spectral line emission data - 
+1. Predicting mass, momentum, and energy of molecular outflows in Cyg X from 12CO(3-2) Spectral line emission data - \n
   Typically, we need 3 separate spectral lines, namely, 12CO, 13CO, and C18O, for estimating these quantities. However, the last two are observationally expensive. Hence, we had developed an empirical model that can be used to infer these quantities from 12CO data alone. This was done by using all observatons available for a small sample of outflows. (Project link - ). 
 
 2.  The role of outflows in turbulence support for host molecular clouds - 
